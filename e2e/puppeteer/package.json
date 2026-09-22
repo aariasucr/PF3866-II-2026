@@ -1,0 +1,24 @@
+{
+  "name": "puppeteer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node tests/run-all-tests.ts",
+    "test:google": "ts-node tests/demo-google-search.ts",
+    "test:form": "ts-node tests/demo-form-interaction.ts",
+    "test:accessibility": "ts-node tests/demo-accessibility-test.ts",
+    "clean": "rm -rf dist *.png"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "E2E testing project with TypeScript and Puppeteer",
+  "devDependencies": {
+    "@axe-core/puppeteer": "^4.10.2",
+    "@types/node": "^24.5.2",
+    "puppeteer": "^24.22.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

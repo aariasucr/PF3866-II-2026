@@ -1,0 +1,17 @@
+node_modules
+*.log
+*.aes
+.history
+.vscode
+env
+.DS_Store
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# TypeScript
+dist/
+*.tsbuildinfo
