@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 5s
+
+# k6 envia sus metricas por remote-write (no requiere scrape).
+# QuickPizza expone /metrics: vista del lado servidor.
+scrape_configs:
+  - job_name: quickpizza
+    static_configs:
+      - targets: ["quickpizza:3333"]
