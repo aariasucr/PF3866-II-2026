@@ -1,0 +1,6 @@
+.venv
+.hypothesis/
+__pycache__/
+.pytest_cache/
+schemathesis-report/
+.schemathesis

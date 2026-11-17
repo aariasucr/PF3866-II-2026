@@ -1,0 +1,48 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "panels": [
+    {
+      "type": "text",
+      "title": "Guía",
+      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 0 },
+      "options": {
+        "mode": "markdown",
+        "content": "## Señales Doradas — punto de partida\nEstos paneles usan las **métricas de negocio** que instrumentaste (`tasks_created_total`, `priority_calc_duration_ms`).\n\n**Paso 6 del lab:** ve a Prometheus (localhost:9090), escribe `http` en el explorador de métricas y descubre el nombre real de la métrica de duración HTTP que emite la auto-instrumentación. Luego agrega aquí los paneles de **Latencia (p95)**, **Tráfico (req/s)** y **Errores (rate de 5xx)** a nivel HTTP."
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Tráfico de negocio — tareas creadas (rate)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        { "expr": "sum(rate(tasks_created_total[1m]))", "legendFormat": "tareas/s" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latencia de negocio — p95 cálculo de prioridad (ms)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(priority_calc_duration_ms_bucket[1m])) by (le))", "legendFormat": "p95" }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "templating": {
+    "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": { "text": "Prometheus", "value": "Prometheus" }
+      }
+    ]
+  },
+  "time": { "from": "now-15m", "to": "now" },
+  "title": "Quality Lab — Señales Doradas",
+  "uid": "quality-lab-golden",
+  "version": 1
+}

@@ -1,0 +1,45 @@
+{
+  "name": "quality-lab-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --import ./src/tracing.ts src/index.ts",
+    "start": "tsx --import ./src/tracing.ts src/index.ts",
+    "start:no-otel": "tsx src/index.ts",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "mutation": "stryker run"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "0.52.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "0.54.0",
+    "@opentelemetry/exporter-trace-otlp-http": "0.54.0",
+    "@opentelemetry/host-metrics": "0.35.4",
+    "@opentelemetry/instrumentation-runtime-node": "0.9.0",
+    "@opentelemetry/resources": "1.27.0",
+    "@opentelemetry/sdk-metrics": "1.27.0",
+    "@opentelemetry/sdk-node": "0.54.0",
+    "@opentelemetry/semantic-conventions": "1.27.0",
+    "cors": "2.8.5",
+    "express": "4.21.1",
+    "pg": "8.13.1",
+    "swagger-ui-express": "5.0.1"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "8.6.0",
+    "@stryker-mutator/vitest-runner": "8.6.0",
+    "@types/cors": "2.8.17",
+    "@types/express": "4.17.21",
+    "@types/node": "22.9.0",
+    "@types/pg": "8.11.10",
+    "@types/swagger-ui-express": "4.1.8",
+    "@vitest/coverage-v8": "2.1.5",
+    "tsx": "4.23.15",
+    "typescript": "5.6.3",
+    "vitest": "2.1.5"
+  }
+}

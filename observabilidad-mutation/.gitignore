@@ -1,0 +1,7 @@
+node_modules
+dist
+reports
+.stryker-tmp
+*.log
+coverage
+.venv

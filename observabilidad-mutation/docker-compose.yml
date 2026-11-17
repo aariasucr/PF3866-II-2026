@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lab
+      POSTGRES_PASSWORD: lab
+      POSTGRES_DB: lab
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  # Recibe OTLP del backend y lo reparte: trazas -> Jaeger, métricas -> Prometheus.
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./otel/collector-config.yaml:/etc/otel-collector.yaml:ro
+    ports:
+      - "4318:4318" # OTLP HTTP (el backend exporta aquí)
+      - "8889:8889" # métricas que Prometheus raspa
+    depends_on: [jaeger]
+
+  # Jaeger all-in-one: UI de trazas en :16686
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686" # UI
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["9090:9090"]
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["3001:3000"] # UI en localhost:3001
+    depends_on: [prometheus]
+
+  # El backend corre con OTel. Para el lab se ejecuta normalmente con `npm run dev`
+  # en la máquina del estudiante, pero se incluye aquí para un arranque de un comando.
+  # backend:
+  #   build: ./backend
+  #   environment:
+  #     PGHOST: postgres
+  #     OTEL_COLLECTOR_URL: http://otel-collector:4318
+  #     OTEL_SERVICE_NAME: tasks-backend
+  #   ports: ["3000:3000"]
+  #   depends_on:
+  #     postgres: { condition: service_healthy }
+  #     otel-collector: { condition: service_started }
+  #   profiles: ["full"]   # se levanta solo con: docker compose --profile full up
