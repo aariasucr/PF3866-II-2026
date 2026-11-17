@@ -16,11 +16,11 @@ export interface Task {
  *  - Si vence en 7 días o menos -> media.
  *  - En otro caso -> baja.
  */
-export function calcularPrioridad(t: Task): 'alta' | 'media' | 'baja' {
-  if (t.blocked) return 'baja';
-  if (t.important && t.dueInDays <= 2) return 'alta';
-  if (t.dueInDays <= 7) return 'media';
-  return 'baja';
+export function calcularPrioridad(t: Task): "alta" | "media" | "baja" {
+  if (t.blocked) return "baja";
+  if (t.important && t.dueInDays <= 2) return "alta";
+  if (t.dueInDays <= 7) return "media";
+  return "baja";
 }
 
 /**
